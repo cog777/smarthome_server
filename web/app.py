@@ -11,24 +11,23 @@ socketio = SocketIO(app)
 def postJsonHandler():
     global temperature_value
     content = request.get_json()
+    print ("postjson", flush = True)
     print (content, flush = True)
     temperature_value = content['temperature']
     socketio.emit('temperature', {'data': temperature_value})
     return 'JSON posted'
 
-@socketio.on('my event')
-def test_message(message):
-    global temperature_value
-    print ("Send", flush = True)
-    emit('temperature', {'data': message[temperature_value]})
-
 @app.route('/')
 @app.route('/index')
 def index():
+    return render_template('index.html',
+                           async_mode=socketio.async_mode)
+
+@app.route('/odense')
+def odense_temperature():
     global temperature_value
-    return render_template('odense/index.html',
+    return render_template('/odense/temperature.html',
                            async_mode=socketio.async_mode)
 
 if __name__ == "__main__":
     socketio.run(app, host='0.0.0.0', debug=True)
- #   app.run(host='0.0.0.0')
