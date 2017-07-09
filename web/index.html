@@ -1,21 +1,25 @@
 <!DOCTYPE HTML>
 <html>
 <head>
- <title>SocketIO Temperature Monitor</title>                                                   
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
-    <script type="text/javascript" charset="utf-8">                              
-        $(document).ready(function(){                                                                                                           
-            var socket = io.connect();
-            socket.on('temperature', function(msg) {
-                $('#log').text(msg.data + '');
-            });
-            
-        });                                                                      
-    </script>  
+ <title>Select Location</title>
+ <style media="screen" type="text/css">
+ .button {
+     background-color: #4CAF50; /* Green */
+     border: none;
+     color: white;
+     padding: 15px 32px;
+     text-align: center;
+     text-decoration: none;
+     display: inline-block;
+     font-size: 16px;
+ }
+ </style>
 </head>
 <body>
-<h1>Temperature</h1>
-<div id="log"></div>
+  <div id="container" style="text-align: center;">
+    <h1> Choose location </h1>
+    <a href="#" class="button">Nyirád</a>
+    <a href="odense/temperature.html" class="button">Odense</a>
+  </div>
 </body>
 </html>
