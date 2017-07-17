@@ -14,7 +14,13 @@ def postJsonHandler():
     print ("postjson", flush = True)
     print (content, flush = True)
     temperature_value = content['temperature']
-    socketio.emit('temperature', {'data': temperature_value})
+    source = content['source'].lower()
+    if source == 'nyirad':
+        socketio.emit('temperature', {'data': temperature_value}, namespace='/nyirad')
+    elif source == 'odense':
+        socketio.emit('temperature', {'data': temperature_value}, namespace='/odense')
+    else:
+        print ("Unknown source({})", source, flush = True)
     return 'JSON posted'
 
 @app.route('/')
@@ -28,6 +34,21 @@ def odense_temperature():
     global temperature_value
     return render_template('/odense/temperature.html',
                            async_mode=socketio.async_mode)
+
+@app.route('/nyirad')
+def nyirad_temperature():
+    return render_template('/nyirad/temperature.html',
+                           async_mode=socketio.async_mode)
+
+@socketio.on('connect', namespace='/odense')
+def odense_client_connect():
+    print ("Client connected - Odense", flush = True)
+    pass
+
+@socketio.on('connect', namespace='/nyirad')
+def odense_client_connect():
+    print ("Client connected - Nyirad", flush = True)
+    pass
 
 if __name__ == "__main__":
     socketio.run(app, host='0.0.0.0', debug=True)
